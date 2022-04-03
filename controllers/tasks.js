@@ -18,15 +18,33 @@ export const createTask = async (req, res) => {
   }
 };
 
-export const getSingleTask = (req, res) => {
-  const { id } = req.params;
-  res.json({ success: true, data: { id } });
+export const getSingleTask = async (req, res) => {
+  const { id: taskID } = req.params;
+  try {
+    const task = await Task.findOne({ _id: taskID });
+    if (!task) {
+      return res.status(404).send({ msg: `No task found by id ${taskID}` });
+    }
+    res.status(200).json({ task });
+  } catch (e) {
+    res.status(500).send({ msg: e });
+  }
 };
 
 export const updateTask = (req, res) => {
   res.send("update task");
 };
 
-export const deleteTask = (req, res) => {
+export const deleteTask = async (req, res) => {
+  try {
+    const { id: taskID } = req.params;
+    const task = await Task.findOneAndDelete({ _id: taskID });
+    if (!task) {
+      return res.status(404).send({ msg: `No task found by id ${taskID}` });
+    }
+    res.status(200).json({ msg: "Task deleted successfully" });
+  } catch (e) {
+    res.status(500).send({ msg: e });
+  }
   res.send("delete task");
 };
