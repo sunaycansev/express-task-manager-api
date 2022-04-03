@@ -4,15 +4,17 @@ import dotenv from "dotenv";
 dotenv.config();
 const app = express();
 import tasks from "./routes/tasks.js";
+import notFound from "./middleware/not-found.js";
 
 // middleware
 app.use(express.json());
+// serve static files
+app.use(express.static("./public"));
 
 // routes
-app.get("/", (req, res) => {
-  res.send("Hello World");
-});
 app.use("/api/v1/tasks", tasks);
+
+app.use(notFound);
 
 const port = 5000;
 const start = async () => {
