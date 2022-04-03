@@ -1,9 +1,16 @@
+import Task from "../models/Task.js";
+
 export const getAllTasks = (req, res) => {
   res.send("all tasks");
 };
 
-export const createTask = (req, res) => {
-  res.json({ success: true, data: req.body });
+export const createTask = async (req, res) => {
+  try {
+    const task = await Task.create(req.body);
+    res.status(201).json({ task });
+  } catch (e) {
+    res.status(500).send({ message: e });
+  }
 };
 
 export const getSingleTask = (req, res) => {
