@@ -5,6 +5,7 @@ dotenv.config();
 const app = express();
 import tasks from "./routes/tasks.js";
 import notFound from "./middleware/not-found.js";
+import asyncWrapper from "./middleware/async.js";
 
 // middleware
 app.use(express.json());
